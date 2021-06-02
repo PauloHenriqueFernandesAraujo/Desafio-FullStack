@@ -1,0 +1,213 @@
+<div class="toolbar" role="banner">
+  <img width="40" alt="Angular Logo"
+    src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==" />
+  <span>Desafio Desenvolvedor Full Stack</span>
+</div>
+
+<div class="container contentForm" style="margin-top: 100px; height: calc(100vh - 15vh);">
+
+  <div class="row">
+    <div class="col-md-12">
+
+      <div *ngIf="!formDebts" class="col-md-11" style="justify-content: center;">
+
+        <div class="row">
+          <div style="text-align: left;">
+            <button type="button" title="Adicionar Dívida" class="plus-btn" (click)="onNewDivida()"><i
+                class="fa fa-plus"></i></button>Dívida
+          </div>
+        </div>
+
+        <div class="row">
+          <table class="table table-hover">
+
+            <thead style="background: darkgray;">
+              <tr>
+                <th width="5%" scope="col"></th>
+                <th width="5%" scope="col"></th>
+                <th width="15%" scope="col">Número do título</th>
+                <th width="15%" scope="col">Nome do devedor</th>
+                <th width="15%" scope="col">Qtde de parcelas</th>
+                <th width="15%" scope="col">Valor original</th>
+                <th width="15%" scope="col">Valor atualizado na data de hoje</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="tableDebts.length > 0">
+              <tr *ngFor="let item of tableDebts">
+                <td>
+                  <button type="button" title="Editar Dívida" class="plus-btn" (click)="onEditar('debts',item.Id)"><i
+                      class="fa fa-edit" style="color: blue;"></i></button>
+                </td>
+                <td>
+                  <button type="button" title="Excluir Dívida" class="plus-btn" (click)="onExcluir('debts',item.Id)"><i
+                      class="fa fa-trash" style="color: red;"></i></button>
+                </td>
+                <td>{{ item.NumeroTitulo }}</td>
+                <td>{{ item.NomeDevedor }}</td>
+                <td>{{ item.QuantidadeParcelas }}</td>
+                <td>{{ item.ValorOriginal }}</td>
+                <td>{{ item.ValorAtualizado }}</td>
+              </tr>
+            </tbody>
+
+          </table>
+        </div>
+
+      </div>
+
+      <div *ngIf="formDebts" class="col-md-11" style="justify-content: center;">
+
+        <form [formGroup]="debtsForm">
+          <div class="row">
+            <div style="text-align: left;">
+              <button type="button" title="Voltar" class="plus-btn" (click)="onBackDivida()"><i
+                  class="fa fa-arrow-left"></i></button>Voltar
+            </div>
+          </div>
+
+          <div class="row" style="margin-top: 15px;">
+
+            <div class="col-md-2">
+              <p class="titleText"> Número do Título</p>
+              <input formControlName="NumeroDotitulo" (keypress)="numberOnly($event)" class="form-control" type="text"
+                maxlength="15" placeholder="Informe o número do título">
+            </div>
+
+            <div class="col-md-3">
+              <p class="titleText"> Nome do Devedor</p>
+              <input formControlName="NomeDoDevedor" class="form-control" type="text" maxlength="250"
+                placeholder="Informe o nome do Devedor">
+            </div>
+
+            <div class="col-md-3">
+              <p class="titleText"> CPF do Devedor</p>
+              <input formControlName="CPFDoDevedor" (keypress)="numberOnly($event)" maxlength="11" class="form-control"
+                type="text" placeholder="Informe o CPF do Devedor">
+            </div>
+
+            <div class="col-md-2">
+              <p class="titleText"> Juros</p>
+              <div class="input-group">
+                <span class="input-group-text">%</span>
+                <input formControlName="Juros" type="number" min="1" max="100" onkeydown="return false"
+                  class="form-control" placeholder="Informe o juros" aria-label="Username"
+                  aria-describedby="basic-addon1">
+              </div>
+            </div>
+
+            <div class="col-md-2">
+              <p class="titleText"> Multa</p>
+              <div class="input-group">
+                <span class="input-group-text">%</span>
+                <input formControlName="Multa" type="number" min="1" max="100" onkeydown="return false"
+                  class="form-control" placeholder="Informe a multa" aria-label="Username"
+                  aria-describedby="basic-addon1">
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row" style="margin-top: 15px;">
+            <div class="col-md-3" style="text-align: left;">
+              <button type="button" class="btn btn-success" (click)="onCreate('debts')"><i class="fa fa-check"></i>
+                Salvar</button>
+            </div>
+          </div>
+        </form>
+
+        <hr>
+
+        <div *ngIf="!formdebtInstallment && this.debtsForm.controls._Id.value != null" class="col-md-12"
+          style="justify-content: center;">
+
+          <div class="row">
+            <div style="text-align: left;">
+              <button type="button" title="Adicionar Parcela" class="plus-btn" (click)="onNewParcela()"><i
+                  class="fa fa-plus"></i></button>Parcela
+            </div>
+          </div>
+
+          <div class="row">
+            <table class="table table-hover">
+
+              <thead style="background: darkgray;">
+                <tr>
+                  <th width="5%" scope="col"></th>
+                  <th width="5%" scope="col"></th>
+                  <th width="30%" scope="col">Número da Parcela</th>
+                  <th width="30%" scope="col">Data de Vencimento</th>
+                  <th width="30%" scope="col">Valor da Parcela</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="tableDebtInstallment.length > 0">
+                <tr *ngFor="let item of tableDebtInstallment">
+                  <td>
+                    <button type="button" title="Editar Dívida" class="plus-btn"  (click)="onEditar('debtInstallment',item._Id)"><i class="fa fa-edit"
+                        style="color: blue;"></i></button>
+                  </td>
+                  <td>
+                    <button type="button" title="Excluir Dívida" class="plus-btn" (click)="onExcluir('debtInstallment',item._Id)"><i class="fa fa-trash"
+                        style="color: red;"></i></button>
+                  </td>
+                  <td>{{ item.NumeroDaParcela }}</td>
+                  <td>{{ item.DataDeVencimento }}</td>
+                  <td>{{ item.ValorDaParcela }}</td>
+                </tr>
+              </tbody>
+
+            </table>
+          </div>
+
+        </div>
+
+        <div *ngIf="formdebtInstallment" class="col-md-11" style="justify-content: center;">
+
+          <form [formGroup]="debtInstallmentForm">
+
+            <div class="row">
+              <div style="text-align: left;">
+                <button type="button" title="Voltar" class="plus-btn" (click)="onBackParcela()"><i
+                    class="fa fa-arrow-left"></i></button>Voltar
+              </div>
+            </div>
+
+            <div class="row" style="margin-top: 15px;">
+
+              <div class="col-md-4">
+                <p class="titleText"> Número da Parcela</p>
+                <input formControlName="NumeroDaParcela" (keypress)="numberOnly($event)" class="form-control" type="text"
+                  maxlength="15" placeholder="Informe o número da parcela">
+              </div>
+
+              <div class="col-md-4">
+                <p class="titleText"> Data De Vencimento</p>
+                <input formControlName="DataDeVencimento" class="form-control" type="date" maxlength="250"
+                  placeholder="Informe a data De Vencimento">
+              </div>
+
+              <div class="col-md-4">
+                <p class="titleText"> Valor da Parcela</p>
+                <input formControlName="ValorDaParcela" maxlength="11"
+                  class="form-control" type="number" step=0.01 placeholder="Informe o valor da parcela">
+              </div>
+
+            </div>
+
+            <div class="row" style="margin-top: 15px;">
+              <div class="col-md-3" style="text-align: left;">
+                <button type="button" class="btn btn-success" (click)="onCreate('debtInstallment')"><i class="fa fa-check"></i>
+                  Salvar</button>
+              </div>
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+
+
+    </div>
+  </div>
+
+</div>

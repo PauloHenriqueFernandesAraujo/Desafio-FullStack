@@ -1,0 +1,1 @@
+export const hostSystem = "http://localhost:44444/api/"; 
